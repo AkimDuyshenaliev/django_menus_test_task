@@ -1,0 +1,10 @@
+<ul>
+    {% for element in mainMenu %}
+    <li>
+        <a href="{% url 'currentFolder' menuName='Main menu' id=element.id %}">{{ element.name }}</a>
+        {% if element.children %}
+            {% include 'tree_menu/menu_tree.html' with mainMenu=element.children %}
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
