@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path
-from .views import main_menu
+from .views import main_menu, home
 
 urlpatterns = [
-    path('', main_menu),
+    path('', home),
     path('<str:menuName>/<int:id>', main_menu, name='currentFolder'),
 ]

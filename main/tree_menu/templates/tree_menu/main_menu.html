@@ -8,10 +8,8 @@
 </head>
 <body>
 
-    {% include 'tree_menu/menu_tree.html' %}
-    
-    {% comment %} {% load draw_menu %}
-    {% draw_menu %} {% endcomment %}
+    {% load call_menu %}
+    {% draw_menu 'Main menu' %} 
 
 </body>
 </html>

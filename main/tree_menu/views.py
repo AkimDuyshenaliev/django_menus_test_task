@@ -2,14 +2,20 @@ from django.shortcuts import render
 from .models import Folder
 
 
-def main_menu(request, menuName='Main menu', id=None):
+def home(request):
+    return render(request, 'tree_menu/main_menu.html')
+
+
+def get_context(request, menuName, id=None):
     '''
     Display "Main menu"
     '''
 
     if id is None:
-        context = {'mainMenu': Folder.objects.filter(menu__name=menuName, parent=None)}
-        return render(request, 'tree_menu/main_menu.html', context)
+        context = {'mainMenu': Folder.objects.filter(menu__name=menuName, parent=None),
+                    'name': menuName}
+        # return render(request, 'tree_menu/menu_tree.html', context)
+        return context
     base = Folder.objects.filter(menu__name=menuName)
 
     def append_children(to, _from):
@@ -43,6 +49,16 @@ def main_menu(request, menuName='Main menu', id=None):
         return tree(childrenFolder=selectedField)
 
     context = {
-        'mainMenu': append_children(to=base.filter(parent=None), _from=tree(childrenFolder=id))
+        'mainMenu': append_children(to=base.filter(parent=None), _from=tree(childrenFolder=id)),
+        'name': menuName
         }
-    return render(request, 'tree_menu/main_menu.html', context)
+    # return render(request, 'tree_menu/menu_tree.html', context)
+    return context
+
+
+def main_menu(request, menuName, id=None):
+    return render(
+        request, 
+        'tree_menu/menu_tree.html', 
+        get_context(request=request, menuName=menuName, id=id)
+    )
